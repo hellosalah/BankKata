@@ -1,15 +1,17 @@
 package org.example;
 
+import java.time.LocalDate;
+
 public class Transaction {
-    private final String date;
+    private final LocalDate date;
     private final int amount;
 
-    public Transaction(String date, int amount) {
+    public Transaction(LocalDate date, int amount) {
         this.date = date;
         this.amount = amount;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
