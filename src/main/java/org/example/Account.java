@@ -1,5 +1,6 @@
 package org.example;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +15,12 @@ public class Account {
     }
 
     public void deposit(int amount) {
-        String date = clock.todayAsString();
+        LocalDate date = clock.today();
         transactions.add(new Transaction(date, amount));
     }
 
     public void withdraw(int amount) {
-        String date = clock.todayAsString();
+        LocalDate date = clock.today();
         transactions.add(new Transaction(date, -amount));
     }
 
