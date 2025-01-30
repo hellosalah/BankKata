@@ -6,9 +6,11 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class StatementPrinterTest {
     private Clock clock;
@@ -37,4 +39,27 @@ public class StatementPrinterTest {
 
         assertEquals(expectedOutput.trim(), outputStream.toString().trim());
     }
+
+    @Test
+    void should_print_transactions_in_reverse_chronological_order() {
+        when(clock.today())
+                .thenReturn(LocalDate.of(2024, 1, 31)) // Latest transaction date
+                .thenReturn(LocalDate.of(2024, 1, 30)) // Second transaction
+                .thenReturn(LocalDate.of(2024, 2, 1)); // Oldest transaction date
+
+        account.deposit(1000); // 31-01-2024
+        account.withdraw(500); // 30-01-2024
+        account.deposit(2000); // 01-02-2024
+
+        account.printStatement();
+
+        String expectedOutput = String.join(System.lineSeparator(),
+                "Date       || Amount || Balance",
+                "01-02-2024 || 2000   || 2000",
+                "30-01-2024 || -500   || 1500",
+                "31-01-2024 || 1000   || 2500");
+
+        assertEquals(expectedOutput.trim(), outputStream.toString().trim());
+    }
+
 }
