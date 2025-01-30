@@ -17,12 +17,8 @@ public class MainAcceptanceTest {
     private StatementPrinter statementPrinter;
     private Account account;
     private ByteArrayOutputStream outputStream;
-    private PrintStream originalOut;
-
     @BeforeEach
     void setUp() {
-        originalOut = System.out;
-        System.out.println("Setting up test...");
         clock = mock(Clock.class);
         statementPrinter = new StatementPrinter();
         account = new Account(clock, statementPrinter);
@@ -50,13 +46,6 @@ public class MainAcceptanceTest {
                 "13-01-2012 || 2000   || 3000",
                 "10-01-2012 || 1000   || 1000");
 
-        originalOut.println("Actual output:");
-        originalOut.println(outputStream.toString());
-        originalOut.println("Expected output:");
-        originalOut.println(expectedOutput);
-
         assertEquals(expectedOutput.trim(), outputStream.toString().trim());
     }
-
-
 }

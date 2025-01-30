@@ -17,13 +17,9 @@ public class StatementPrinterTest {
     private StatementPrinter statementPrinter;
     private Account account;
     private ByteArrayOutputStream outputStream;
-    private PrintStream originalOut;
 
     @BeforeEach
     void setUp() {
-        originalOut = System.out;
-        System.out.println("Setting up test...");
-
         clock = mock(Clock.class);
         statementPrinter = new StatementPrinter();
         account = new Account(clock, statementPrinter);
@@ -43,21 +39,21 @@ public class StatementPrinterTest {
     @Test
     void should_print_transactions_in_reverse_chronological_order() {
         when(clock.today())
-                .thenReturn(LocalDate.of(2024, 1, 31)) // Latest transaction date
-                .thenReturn(LocalDate.of(2024, 1, 30)) // Second transaction
-                .thenReturn(LocalDate.of(2024, 2, 1)); // Oldest transaction date
+                .thenReturn(LocalDate.of(2024, 2, 1))
+                .thenReturn(LocalDate.of(2024, 2, 2))
+                .thenReturn(LocalDate.of(2024, 2, 3));
 
-        account.deposit(1000); // 31-01-2024
-        account.withdraw(500); // 30-01-2024
-        account.deposit(2000); // 01-02-2024
+        account.deposit(500);
+        account.withdraw(100);
+        account.deposit(200);
 
         account.printStatement();
 
         String expectedOutput = String.join(System.lineSeparator(),
                 "Date       || Amount || Balance",
-                "01-02-2024 || 2000   || 2000",
-                "30-01-2024 || -500   || 1500",
-                "31-01-2024 || 1000   || 2500");
+                "03-02-2024 || 200   || 600",
+                "02-02-2024 || -100   || 400",
+                "01-02-2024 || 500   || 500");
 
         assertEquals(expectedOutput.trim(), outputStream.toString().trim());
     }

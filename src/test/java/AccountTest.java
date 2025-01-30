@@ -17,13 +17,9 @@ public class AccountTest {
     private StatementPrinter statementPrinter;
     private Account account;
     private ByteArrayOutputStream outputStream;
-    private PrintStream originalOut;
 
     @BeforeEach
     void setUp() {
-        originalOut = System.out;
-        System.out.println("Setting up test...");
-
         clock = mock(Clock.class);
         statementPrinter = new StatementPrinter();
         account = new Account(clock, statementPrinter);
