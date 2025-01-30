@@ -11,21 +11,17 @@ public class StatementPrinter {
     public void print(List<Transaction> transactions) {
         System.out.println(HEADER);
 
-        // Create copy and reverse
         List<Transaction> reversedTransactions = new ArrayList<>(transactions);
         Collections.reverse(reversedTransactions);
 
-        // Calculate balances for each transaction
         int balance = 0;
         Map<Transaction, Integer> balances = new LinkedHashMap<>();
 
-        // First calculate all balances going forward
-        for (Transaction transaction : transactions) {
+        for (Transaction transaction : reversedTransactions) {
             balance += transaction.getAmount();
             balances.put(transaction, balance);
         }
 
-        // Print in reverse order using the pre-calculated balances
         for (Transaction transaction : reversedTransactions) {
             String statementLine = formatStatementLine(
                     transaction.getDate(),
@@ -35,6 +31,7 @@ public class StatementPrinter {
             System.out.println(statementLine);
         }
     }
+
 
     private String formatStatementLine(LocalDate date, int amount, int balance) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
