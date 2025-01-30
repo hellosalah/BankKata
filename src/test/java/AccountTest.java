@@ -56,13 +56,30 @@ public class AccountTest {
 
         String expectedOutput = String.join(System.lineSeparator(),
                 "Date       || Amount || Balance",
-                "31-01-2024 || -1000  || 0",
+                "31-01-2024 || -1000   || 0",
                 "31-01-2024 || 1000   || 1000");
 
-        originalOut.println("Actual output:");
-        originalOut.println(outputStream.toString());
-        originalOut.println("Expected output:");
-        originalOut.println(expectedOutput);
+        assertEquals(expectedOutput.trim(), outputStream.toString().trim());
+    }
+
+    @Test
+    void should_handle_large_transactions(){
+        when(clock.today())
+                .thenReturn(LocalDate.of(2024, 3, 1))
+                .thenReturn(LocalDate.of(2024, 3, 2))
+                .thenReturn(LocalDate.of(2024, 3, 3));
+
+        account.deposit(1_000_000);
+        account.deposit(2_000_000);
+        account.withdraw(500_000);
+
+        account.printStatement();
+
+        String expectedOutput = String.join(System.lineSeparator(),
+                "Date       || Amount || Balance",
+                "03-03-2024 || -500000   || 2500000",
+                "02-03-2024 || 2000000   || 3000000",
+                "01-03-2024 || 1000000   || 1000000");
 
         assertEquals(expectedOutput.trim(), outputStream.toString().trim());
     }
