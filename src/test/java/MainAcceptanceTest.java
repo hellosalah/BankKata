@@ -43,7 +43,7 @@ public class MainAcceptanceTest {
         account.withdraw(500);
 
         account.printStatement();
-        
+
         String expectedOutput = String.join(System.lineSeparator(),
                 "Date       || Amount || Balance",
                 "14-01-2012 || -500   || 2500",
