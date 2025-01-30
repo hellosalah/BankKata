@@ -17,38 +17,33 @@ public class MainAcceptanceTest {
     private StatementPrinter statementPrinter;
     private Account account;
     private ByteArrayOutputStream outputStream;
-    private PrintStream originalOut;  // Add this field
+    private PrintStream originalOut;
 
     @BeforeEach
     void setUp() {
-        originalOut = System.out;  // Store original System.out
+        originalOut = System.out;
         System.out.println("Setting up test...");
         clock = mock(Clock.class);
         statementPrinter = new StatementPrinter();
         account = new Account(clock, statementPrinter);
 
-        // Capture console output
         outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
     }
 
     @Test
     void should_print_correct_transactions() {
-        // Given controlled dates
         when(clock.today())
                 .thenReturn(LocalDate.of(2012, 1, 10))
                 .thenReturn(LocalDate.of(2012, 1, 13))
                 .thenReturn(LocalDate.of(2012, 1, 14));
 
-        // When transactions occur
         account.deposit(1000);
         account.deposit(2000);
         account.withdraw(500);
 
-        // When printing the statement
         account.printStatement();
-
-        // Then output should match expected
+        
         String expectedOutput = String.join(System.lineSeparator(),
                 "Date       || Amount || Balance",
                 "14-01-2012 || -500   || 2500",
