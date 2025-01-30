@@ -33,7 +33,7 @@ public class MainAcceptanceTest {
     }
 
     @Test
-    void printStatement_ShouldPrintCorrectTransactions() {
+    void should_print_correct_transactions() {
         // Given controlled dates
         when(clock.today())
                 .thenReturn(LocalDate.of(2012, 1, 10))
