@@ -1,0 +1,1 @@
+This project is a small application designed to simulate a simple banking system with features such as deposits, withdrawals, and statement printing. The focus of the project is on Test-Driven Development (TDD) and clean, object-oriented design.
